@@ -7,12 +7,17 @@ output: html_notebook
 
 ## Section 1. Introduction
 
-Include a brief **introduction or motivation** here
+For my project I will Identify what genre of movie was more popular in different years. Like
+action romance and comedy say in the years of 2006 2008 and 2010. I would compare what years
+were more popular with what genre.
 
 ## Section 2. Data Analysis Plan
 
-List any **initial questions** you plan to explore in this project. 
+Were certain genres of movies popular for more than just 1 year overall? does it carry
+on for multiple years? whats movie is the most popular within a 10 year time span? were 
+some movies popularity influenced by the actors withing the movie or the director of the
+movie?
 
 ## Section 3. Data
 
-Include a brief **description of your dataset** (source, available attributes, format, etc.)
+My data set provides movie name, genre, description, director, actors, year run time, ratings, votes, venue, and meta score. My dataset gives its information on these movies throughout a table.
