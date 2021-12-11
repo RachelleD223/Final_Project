@@ -3,11 +3,113 @@ title: "Final Report for Intro to Data Science"
 output: html_notebook
 ---
 
-This is where the final project report write-up goes. 
+#Introduction#
+   My project will answer my questions and confirm or deny my predictions. I predict that action and drama will be the most popular genres and it will be because of the actors depending on the point in time which in my test will be around the time of 2005-2010.
+First lets Load some stuff from our library
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(scales)
+library(dplyr)
+```
+
+When we go to the movies we are influenced by the actors or genre. This will effect the outgoing total of income but what genre ends up being the end winner? The data set i will be using is as follows:
+
+```{r}
+Movies <- read_csv(file = "../data/IMDB_movies.csv")
+Movies
+```
+First we will choose what years we want to work with based on popularity. (I want to work with a 5-10 year timeline)
+```{r}
+Movies %>%
+  select(Year, Rating) %>%
+  arrange(desc(Rating))
+```
+
+Based on this arrangement of the data, In a 1 point difference in rating the most popular years were from 2006-2016 (which is what i was hoping for). We can see the popularity in these years in this ggplot below:
+```{r}
+  ggplot(data = Movies) +
+  geom_point(aes(x = Year, y = Rating, color = "Ratings"))
+```
+
+The years that had the highest ratings were 2008, 2010, and 2016. Now its time to look at what genres these movies were.
+
+```{r}
+Movies %>%
+  select(Year, Rating, Genre) %>%
+  arrange(desc(Rating))
+```
+
+```{r}
+ggplot(data = Movies) +
+  geom_point(aes(x = Year, y = Genre, color = "Ratings"))
+```
+
+After adding the Movie Genre to this filter, we can see that Action and Drama Movies are very popular overall and the 3 highest rated movies had action. Now the next question is... do these movies with common Genre also have Common Known Actors?
+
+```{r}
+MoviesYRGA <- select(Movies, Year, Rating, Genre, Actors) %>%
+  arrange(desc(Rating))
+MoviesYRGA
+```
+
+```{r}
+ggplot(data = MoviesYRGA, aes(x = Actors, y = Genre)) +
+  geom_point(stat = "Identity")
+```
+
+This is too crowded of data so I'm going to next narrow it down a bit to make it easier to observe:
+
+```{r}
+Movies2006 <- filter(MoviesYRGA, Year == 2006)
+Movies2006
+```
+
+```{r}
+ggplot(data = Movies2006, aes(x = Actors, y = Genre)) +
+  geom_point(stat = "Identity")
+```
+Seeing this graph shows that Certain Actors were not in certain genres but how do we decide which genre to focus on? I'll simply decide that by finding the most popular genres and focus on those.
+
+```{r}
+MoviesGR <- filter(MoviesYRGA, Rating == 8.5 )
+MoviesGR
+ggplot(data = MoviesGR, aes(x = Rating, y = Genre)) +
+  geom_point(stat = "Identity") 
+```
+
+   After narrowing down the results to look at genres that were rated 8.5in 2006, we can see that Drama was the most popular Genre of movie at the time. My nxt question is... Do our taste in genre grow through time? I will quickly check this theory by looking at the results for 2016
 
 
-Before you submit, make sure everything runs as expected.
 
-You can add sections as you see fit. Make sure you have a section called "Introduction" at the beginning and a section called "Conclusion" at the end. The rest is up to you!
 
-_Make use of your knowledge of Markdown to appropriately typeset this report!_
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
