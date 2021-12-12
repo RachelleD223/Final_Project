@@ -7,109 +7,57 @@ output: html_notebook
    My project will answer my questions and confirm or deny my predictions. I predict that action and drama will be the most popular genres and it will be because of the actors depending on the point in time which in my test will be around the time of 2005-2010.
 First lets Load some stuff from our library
 
+#Prerequistest
+
 ```{r}
 library(tidyverse)
 library(ggplot2)
 library(scales)
 library(dplyr)
 ```
-
+#Data
 When we go to the movies we are influenced by the actors or genre. This will effect the outgoing total of income but what genre ends up being the end winner? The data set i will be using is as follows:
 
 ```{r}
 Movies <- read_csv(file = "../data/IMDB_movies.csv")
 Movies
 ```
-First we will choose what years we want to work with based on popularity. (I want to work with a 5-10 year timeline)
+
+#Record Data/Findings
+
+  Firstly we want to determine what years to look at because alot of movies are produced each year menaing 10 years will be too much to look at, So I will narrow it down by making a graph showing by dots what years had the highest ratings in movies overall. Before all this when i looked at my data table, I was able to see movies recorded from the year of 2006 to 2016.
 ```{r}
-Movies %>%
-  select(Year, Rating) %>%
+  Movies2008 <- select(Movies, Year, Rating, Genre) %>%
   arrange(desc(Rating))
+Movies2008
 ```
-
-Based on this arrangement of the data, In a 1 point difference in rating the most popular years were from 2006-2016 (which is what i was hoping for). We can see the popularity in these years in this ggplot below:
+  From this narrowing down of data we can see that the year 2008 takes the cake with a clean 9.0 rating on the Movie "The Knight". We can see the most popular movies by making another table but for the movies rated in the year of 2008.
 ```{r}
-  ggplot(data = Movies) +
-  geom_point(aes(x = Year, y = Rating, color = "Ratings"))
+Movies2008 %>%
+  filter(Year == 2008)
+  ggplot(data = Movies2008) +
+  geom_point(aes(x = Genre, y = Rating ))
 ```
-
-The years that had the highest ratings were 2008, 2010, and 2016. Now its time to look at what genres these movies were.
-
+  The table shows that the highest rated movie is in the Genre category of: Action, Crime, and Drama. Now to see if there's a second runner up. I will determine the next highest rated movie in a different year.
 ```{r}
-Movies %>%
-  select(Year, Rating, Genre) %>%
+Toprate <- select(Movies,Year, Rating, Genre, Title) %>%
   arrange(desc(Rating))
+Toprate
+ggplot(data = Toprate) +
+  geom_point(aes(x = Year, y = Rating))
 ```
-
+  
+  The second highest ranked movie (based on its tier in the table) is a movie called "Inception". This movie is rated with an 8.8 In the Genre category of: Action, Adventure, and Sci-Fi. The other movie below that was also rated an 8.8 was Dangal which is in the Genre category: Action, Biography, and Drama.
+  
+  1 Last thing I would like to investigate is what the lowest rated movie in 2008 is because on the graph it is very apparent. We can quickly re-use the command above and make it go from lowest Rating up to see what it is.
+  
 ```{r}
-ggplot(data = Movies) +
-  geom_point(aes(x = Year, y = Genre, color = "Ratings"))
+Toprate <- select(Movies,Year, Rating, Genre, Title) %>%
+  arrange(Rating)
+Toprate
 ```
+  Looking at this table now we can see why the dot was so low on the graph, This movie called "The Disaster" was rated a low 1.9 and its Genre category is only Comedy.
 
-After adding the Movie Genre to this filter, we can see that Action and Drama Movies are very popular overall and the 3 highest rated movies had action. Now the next question is... do these movies with common Genre also have Common Known Actors?
+#Conclusion
 
-```{r}
-MoviesYRGA <- select(Movies, Year, Rating, Genre, Actors) %>%
-  arrange(desc(Rating))
-MoviesYRGA
-```
-
-```{r}
-ggplot(data = MoviesYRGA, aes(x = Actors, y = Genre)) +
-  geom_point(stat = "Identity")
-```
-
-This is too crowded of data so I'm going to next narrow it down a bit to make it easier to observe:
-
-```{r}
-Movies2006 <- filter(MoviesYRGA, Year == 2006)
-Movies2006
-```
-
-```{r}
-ggplot(data = Movies2006, aes(x = Actors, y = Genre)) +
-  geom_point(stat = "Identity")
-```
-Seeing this graph shows that Certain Actors were not in certain genres but how do we decide which genre to focus on? I'll simply decide that by finding the most popular genres and focus on those.
-
-```{r}
-MoviesGR <- filter(MoviesYRGA, Rating == 8.5 )
-MoviesGR
-ggplot(data = MoviesGR, aes(x = Rating, y = Genre)) +
-  geom_point(stat = "Identity") 
-```
-
-   After narrowing down the results to look at genres that were rated 8.5in 2006, we can see that Drama was the most popular Genre of movie at the time. My nxt question is... Do our taste in genre grow through time? I will quickly check this theory by looking at the results for 2016
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  After all this further Investigation/Research on my data I can see That Action ad Drama based movies are the Most Popular types of movies (Based on 2008 1012, and 2014 ) and that in 2008 a movie hit all time low against all other movies in this dataset with a 1.9. :(
